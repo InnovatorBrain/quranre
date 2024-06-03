@@ -1,0 +1,43 @@
+.Headings-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    max-width: 60%;
+    margin: 5rem auto 3rem auto;
+
+}
+
+.Headings-title {
+    font-family: var(--font-base);
+    font-size: 36px;
+    margin-bottom: 18px;
+    font-weight: 600;
+    opacity: 0.86;
+}
+
+.Headings-text {
+    font-family: var(--font-base);
+    font-size: 16px;
+}
+.Headings-link{
+    margin-top: 18px;
+    font-family: var(--font-base);
+    font-size: 16px;
+    text-decoration: underline;
+    color: #1473e6;
+    font-weight: 600;
+}
+
+
+
+/* Media query for screens smaller than 576px (e.g., smartphones) */
+@media only screen and (max-width: 575.98px) {
+    .Headings-main-container {
+        max-width: 80%;
+        margin: 5rem auto;
+    }
+
+}
