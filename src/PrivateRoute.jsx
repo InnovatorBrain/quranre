@@ -13,22 +13,47 @@ const PrivateRoutes = () => {
             if (token) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 try {
-                    await axios.get('http://127.0.0.1:8000/auth/validate/token/');
+                    const response = await axios.get('http://127.0.0.1:8000/auth/validate/token/');
                     setAuthenticated(true);
+                    console.log('Token validated');
+                    fetchUserProfile(); // Fetch user profile after validating token
                 } catch (error) {
                     console.error('Token validation failed', error);
                     setAuthenticated(false);
-                    window.location.href = "/login";
+                    navigate('/login');
                 }
             } else {
                 setAuthenticated(false);
-                window.location.href = "/login";
+                navigate('/login');
             }
             setLoading(false);
         };
 
         checkAuthentication();
     }, [navigate]);
+
+    const fetchUserProfile = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/auth/profile/');
+            console.log('Profile Data:', response.data);
+            redirectToProfile(response.data);
+        } catch (error) {
+            console.error('Error fetching user profile', error);
+            // Handle error fetching profile data, maybe redirect to a default route
+        }
+    };
+
+    const redirectToProfile = (userData) => {
+        if (userData.student_profile > 0) { // Check if the user has a student profile
+            navigate('/student-pro');
+        } else if (userData.teacher_profile > 0) { // Check if the user has a teacher profile
+            navigate('/teacher-pro');
+        } else {
+            // If user has no specific profile type, you may want to handle this case
+            console.error('User has no specific profile type');
+            navigate('/default-route');
+        }
+    };
 
     if (loading) {
         return <div>Loading...</div>;

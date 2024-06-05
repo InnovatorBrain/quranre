@@ -14,37 +14,33 @@ import {
 
 export default function ProfileStatistics() {
   const [teachers, setTeachers] = useState([]);
-  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const teachersResponse = await axios.get('http://127.0.0.1:8000/auth/teachers/');
-        setTeachers(teachersResponse.data);
-      } catch (error) {
-        console.error("Error fetching teachers data", error);
-      }
-    };
+        const [teachersResponse, imagesResponse] = await Promise.all([
+          axios.get('http://127.0.0.1:8000/auth/teachers/'),
+          axios.get('http://127.0.0.1:8000/auth/teacher-images/')
+        ]);
 
-    const fetchImages = async () => {
-      try {
-        const imagesResponse = await axios.get('http://127.0.0.1:8000/auth/teacher-images/');
-        setImages(imagesResponse.data);
+        const imagesMap = imagesResponse.data.reduce((map, image) => {
+          map[image.custom_user] = `http://127.0.0.1:8000${image.image}`;
+          return map;
+        }, {});
+
+        const teachersWithImages = teachersResponse.data.map(teacher => ({
+          ...teacher,
+          image: imagesMap[teacher.id] || 'https://via.placeholder.com/150'
+        }));
+
+        setTeachers(teachersWithImages);
       } catch (error) {
-        console.error("Error fetching images", error);
+        console.error("Error fetching data", error);
       }
     };
 
     fetchTeachers();
-    fetchImages();
   }, []);
-
-  const getImageForTeacher = (teacher) => {
-    const image = images.find(
-      img => img.user_first_name === teacher.user_first_name && img.user_last_name === teacher.user_last_name
-    );
-    return image ? `http://127.0.0.1:8000${image.image}` : 'https://via.placeholder.com/150';
-  };
 
   return (
     <div className="min-vh-100 d-flex flex-column" style={{ backgroundColor: '#eee' }}>
@@ -56,7 +52,7 @@ export default function ProfileStatistics() {
                 <MDBCardBody className="text-center">
                   <div className="mt-3 mb-4">
                     <MDBCardImage 
-                      src={getImageForTeacher(teacher)}
+                      src={teacher.image}
                       className="rounded-circle" 
                       fluid 
                       style={{ width: '100px' }} 
@@ -72,7 +68,7 @@ export default function ProfileStatistics() {
                     {teacher.qualifications ? `Qualifications: ${teacher.qualifications}` : 'Qualifications: N/A'}
                   </MDBCardText>
                   <MDBBtn rounded size="lg">
-                    Message now
+                    Enroll Now
                   </MDBBtn>
                 </MDBCardBody>
               </MDBCard>

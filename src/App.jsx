@@ -10,11 +10,16 @@ import Footer from './components/Footer/Footer';
 import Signup from './pages/Signup';
 import Headings from './components/PageNotFount/PageNotFount';
 import ProfileStatistics from './pages/TeachersCard';
+import TimeTable from './pages/TimeTable';
+import Courses from './pages/Courses';
+import Chating from './Chating';
 
 // Profile
 import StudentProfile from './components/StudentProfile';
 import TeacherProfile from './components/TeacherProfile';
 import TeacherControlTab from './components/TeacherControlTab';
+import AnnounceLecture from './pages/AnnounceLecture';
+import AnnounceMarquee from './pages/AnnounceMarquee';
 
 
 function App() {
@@ -22,19 +27,21 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<><AnnounceMarquee/><Home /></>} />
         {/* <Route path='/resources' element={<Resources />} /> */}
         <Route path='/faqs' element={<Faq />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/Teachers' element={<ProfileStatistics />} />
+        <Route path='/timetable' element={<><TimeTable /> <Courses /></>} />
         {/* Athenticated Users */}
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<div className="Dashboard-main-container">okies</div>} />
           <Route path='/student-pro' element={<StudentProfile />} />
-          <Route path='/teacher-pro' element={<><TeacherProfile /><TeacherControlTab /></>} />
+          <Route path='/teacher-pro' element={<><TeacherProfile /><TeacherControlTab /><AnnounceLecture/></>} />
         </Route>
+        <Route path='/chat' element={<Chating />} />
         <Route path="*" element={
           <div className='404Page'>
             <Headings
