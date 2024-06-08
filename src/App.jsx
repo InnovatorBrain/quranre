@@ -12,7 +12,7 @@ import Headings from './components/PageNotFount/PageNotFount';
 import ProfileStatistics from './pages/TeachersCard';
 import TimeTable from './pages/TimeTable';
 import Courses from './pages/Courses';
-import Chating from './Chating';
+import Chat from './Chating';
 
 // Profile
 import StudentProfile from './components/StudentProfile';
@@ -41,7 +41,7 @@ function App() {
           <Route path='/student-pro' element={<StudentProfile />} />
           <Route path='/teacher-pro' element={<><TeacherProfile /><TeacherControlTab /><AnnounceLecture/></>} />
         </Route>
-        <Route path='/chat' element={<Chating />} />
+        <Route path='/chat' element={<Chat />} />
         <Route path="*" element={
           <div className='404Page'>
             <Headings
